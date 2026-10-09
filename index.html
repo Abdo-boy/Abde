@@ -1,56 +1,305 @@
+```html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ouiame ❤️</title>
 
-const MESSAGE =
-  'الله يشافيك ويعافيك، ويخفف عليك كل ألم وتعب، ويقوّيك بالصحة والعافية. ' +
-  'إن شاء الله تكون هاد الفترة غير سحابة صيف وتدوز، وترجع لضحكتك ونشاطك، ' +
-  'وما تشوف غير الخير يا رب. ❤️';
+  <!-- Polices -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
 
-const openBtn = document.getElementById('openBtn');
-const heartBtn = document.getElementById('heartBtn');
-const messageBox = document.getElementById('message');
-const textEl = document.getElementById('text');
-const heartsLayer = document.getElementById('hearts');
-
-const EMOJIS = ['❤️', '💖', '💗', '🌸', '✨', '💕'];
-
-function spawnHeart() {
-  const el = document.createElement('span');
-  el.className = 'float-heart';
-  el.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
-  el.style.left = Math.random() * 100 + 'vw';
-  el.style.fontSize = 14 + Math.random() * 26 + 'px';
-  el.style.animationDuration = 6 + Math.random() * 6 + 's';
-  heartsLayer.appendChild(el);
-  setTimeout(() => el.remove(), 12500);
-}
-
-// قلوب خفيفة طول الوقت
-setInterval(spawnHeart, 700);
-
-function burst(n = 25) {
-  for (let i = 0; i < n; i++) setTimeout(spawnHeart, i * 60);
-}
-
-function typeText(text, el, speed = 45, done) {
-  let i = 0;
-  el.textContent = '';
-  el.classList.add('cursor');
-  const timer = setInterval(() => {
-    el.textContent += text[i++];
-    if (i >= text.length) {
-      clearInterval(timer);
-      el.classList.remove('cursor');
-      if (done) done();
+  <!-- CSS -->
+  <style>
+    * {
+      box-sizing: border-box;
     }
-  }, speed);
-}
 
-openBtn.addEventListener('click', () => {
-  openBtn.hidden = true;
-  messageBox.hidden = false;
-  burst();
-  typeText(MESSAGE, textEl, 45, () => {
-    heartBtn.hidden = false;
-  });
-});
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      padding: 20px;
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #ffe0ec, #f8b6d0, #ffd6e7);
+      color: #7a244b;
+    }
 
-heartBtn.addEventListener('click', () => burst(40));
+    .hearts {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .float-heart {
+      position: absolute;
+      bottom: -50px;
+      opacity: 0;
+      animation: floatUp linear forwards;
+      filter: drop-shadow(0 3px 5px #e76c9a55);
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
+      15% {
+        opacity: 0.8;
+      }
+      85% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 450px;
+      padding: 35px 25px;
+      text-align: center;
+      border: 1px solid #ffffffaa;
+      border-radius: 28px;
+      background: #ffffffdc;
+      box-shadow: 0 15px 50px #a82f6340;
+      backdrop-filter: blur(10px);
+      animation: appear 1s ease;
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(25px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .big-heart {
+      font-size: 75px;
+      animation: heartbeat 1.5s infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      15% { transform: scale(1.15); }
+      30% { transform: scale(1); }
+      45% { transform: scale(1.1); }
+    }
+
+    .name {
+      margin: 10px 0;
+      color: #d63384;
+      font-family: 'Great Vibes', cursive;
+      font-size: 58px;
+      direction: ltr;
+    }
+
+    .subtitle {
+      margin-bottom: 25px;
+      font-size: 17px;
+      color: #8b4565;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 30px;
+      padding: 13px 25px;
+      margin: 8px;
+      background: linear-gradient(135deg, #ec4899, #d63384);
+      color: white;
+      font-family: 'Cairo', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 5px 15px #d6338440;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px #d6338460;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .btn-ghost {
+      background: white;
+      color: #d63384;
+      border: 2px solid #f3a5ca;
+    }
+
+    .message {
+      margin-top: 22px;
+      padding: 20px;
+      border-radius: 18px;
+      background: #fff0f6;
+      border-right: 4px solid #ec4899;
+      font-size: 17px;
+      line-height: 2.1;
+      color: #7a244b;
+      text-align: right;
+    }
+
+    .cursor::after {
+      content: "|";
+      color: #d63384;
+      animation: blink 0.7s infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 25px 18px;
+      }
+
+      .name {
+        font-size: 48px;
+      }
+
+      .message {
+        font-size: 15px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="hearts" id="hearts"></div>
+
+  <main class="card" id="card">
+
+    <div class="big-heart" aria-hidden="true">❤️</div>
+
+    <h1 class="name">Ouiame</h1>
+
+    <p class="subtitle">رسالة صغيرة من القلب إليك</p>
+
+    <button class="btn" id="openBtn">
+      افتحي الرسالة 💌
+    </button>
+
+    <section class="message" id="message" hidden>
+      <p id="text"></p>
+    </section>
+
+    <button class="btn btn-ghost" id="heartBtn" hidden>
+      ابعثي ليها بعض الحب 💖
+    </button>
+
+  </main>
+
+  <!-- JavaScript -->
+  <script>
+    const MESSAGE =
+      'الله يشافيك ويعافيك، ويخفف عليك كل ألم وتعب، ويقوّيك بالصحة والعافية. ' +
+      'إن شاء الله تكون هاد الفترة غير سحابة صيف وتدوز، وترجع لضحكتك ونشاطك، ' +
+      'وما تشوف غير الخير يا رب. ❤️';
+
+    const openBtn = document.getElementById('openBtn');
+    const heartBtn = document.getElementById('heartBtn');
+    const messageBox = document.getElementById('message');
+    const textEl = document.getElementById('text');
+    const heartsLayer = document.getElementById('hearts');
+
+    const EMOJIS = ['❤️', '💖', '💗', '🌸', '✨', '💕'];
+
+    // Créer un cœur flottant
+    function spawnHeart() {
+      const el = document.createElement('span');
+
+      el.className = 'float-heart';
+      el.textContent =
+        EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.fontSize = 14 + Math.random() * 26 + 'px';
+      el.style.animationDuration = 6 + Math.random() * 6 + 's';
+
+      heartsLayer.appendChild(el);
+
+      setTimeout(() => el.remove(), 12500);
+    }
+
+    // Cœurs animés en continu
+    setInterval(spawnHeart, 700);
+
+    // Plusieurs cœurs apparaissent simultanément
+    function burst(n = 25) {
+      for (let i = 0; i < n; i++) {
+        setTimeout(spawnHeart, i * 60);
+      }
+    }
+
+    // Écrire le message progressivement
+    function typeText(text, el, speed = 45, done) {
+      let i = 0;
+
+      el.textContent = '';
+      el.classList.add('cursor');
+
+      const timer = setInterval(() => {
+        el.textContent += text[i];
+        i++;
+
+        if (i >= text.length) {
+          clearInterval(timer);
+          el.classList.remove('cursor');
+
+          if (done) done();
+        }
+      }, speed);
+    }
+
+    // Ouvrir la lettre
+    openBtn.addEventListener('click', () => {
+      openBtn.hidden = true;
+      messageBox.hidden = false;
+
+      burst();
+
+      typeText(MESSAGE, textEl, 45, () => {
+        heartBtn.hidden = false;
+      });
+    });
+
+    // Envoyer une pluie de cœurs
+    heartBtn.addEventListener('click', () => {
+      burst(40);
+    });
+  </script>
+
+</body>
+</html>
+```
