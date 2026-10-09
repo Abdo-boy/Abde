@@ -1,1 +1,56 @@
 
+const MESSAGE =
+  'الله يشافيك ويعافيك، ويخفف عليك كل ألم وتعب، ويقوّيك بالصحة والعافية. ' +
+  'إن شاء الله تكون هاد الفترة غير سحابة صيف وتدوز، وترجع لضحكتك ونشاطك، ' +
+  'وما تشوف غير الخير يا رب. ❤️';
+
+const openBtn = document.getElementById('openBtn');
+const heartBtn = document.getElementById('heartBtn');
+const messageBox = document.getElementById('message');
+const textEl = document.getElementById('text');
+const heartsLayer = document.getElementById('hearts');
+
+const EMOJIS = ['❤️', '💖', '💗', '🌸', '✨', '💕'];
+
+function spawnHeart() {
+  const el = document.createElement('span');
+  el.className = 'float-heart';
+  el.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+  el.style.left = Math.random() * 100 + 'vw';
+  el.style.fontSize = 14 + Math.random() * 26 + 'px';
+  el.style.animationDuration = 6 + Math.random() * 6 + 's';
+  heartsLayer.appendChild(el);
+  setTimeout(() => el.remove(), 12500);
+}
+
+// قلوب خفيفة طول الوقت
+setInterval(spawnHeart, 700);
+
+function burst(n = 25) {
+  for (let i = 0; i < n; i++) setTimeout(spawnHeart, i * 60);
+}
+
+function typeText(text, el, speed = 45, done) {
+  let i = 0;
+  el.textContent = '';
+  el.classList.add('cursor');
+  const timer = setInterval(() => {
+    el.textContent += text[i++];
+    if (i >= text.length) {
+      clearInterval(timer);
+      el.classList.remove('cursor');
+      if (done) done();
+    }
+  }, speed);
+}
+
+openBtn.addEventListener('click', () => {
+  openBtn.hidden = true;
+  messageBox.hidden = false;
+  burst();
+  typeText(MESSAGE, textEl, 45, () => {
+    heartBtn.hidden = false;
+  });
+});
+
+heartBtn.addEventListener('click', () => burst(40));
